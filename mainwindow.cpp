@@ -26,16 +26,18 @@ MainWindow::MainWindow(QWidget *parent) :
     setGeometry(0,0,1920,1680);
     startgame = new QPushButton(this);
     Help = new QPushButton(this);
-    label1=new QLabel();
+    label1=new QLabel(this);
     player = new QMediaPlayer(this);
     playlist = new QMediaPlaylist(this);
-    player->setMedia(QUrl::fromLocalFile("E:/qtproject/zhizhu0.65/zhizhu/bgm.mp3"));
+    // player->setMedia(QUrl::fromLocalFile("E://qtproject//zhizhu0.65//zhizhu//bgm.mp3"));
     player->setVolume(80);
     playlist = new QMediaPlaylist;
+    playlist->addMedia(QUrl::fromLocalFile("E://qtproject//zhizhu0.65//zhizhu//bgm.mp3"));
     player->setPlaylist(playlist);
     player->setVolume(80);
     playlist->setPlaybackMode(QMediaPlaylist::Loop);
     player->play();
+    qDebug()<<"play"<<endl;
     for(int i=0;i<8;i++)
     {
         zuoxia[i] = new poke(this);
@@ -124,6 +126,7 @@ MainWindow::~MainWindow()
 }
 void MainWindow::start()
 {
+    qDebug()<<"1"<<endl;
     startgame->setVisible(false);
     Help->setVisible(false);
     huase->setVisible(false);//不可见
@@ -247,6 +250,7 @@ void MainWindow::start()
         pokes[i]->open=1;
         pokes[i]->setEnabled(true);
     }//设置初始是否打开，能不能动
+    qDebug()<<"able!"<<endl;
     for(int i=0;i<10;i++)
     {
         lineemptypoke[i]->setEnabled(false);//空牌初始不能被点击
@@ -327,6 +331,28 @@ void MainWindow::backtomenu()
         lineemptypoke[i]->setVisible(false);
     }
     label->setVisible(true);
+    for(int i=0;i<104;i++)
+    {
+        pokes[i]->setVisible(false);
+        pokes[i]->my=i;
+    }
+    for(int i=0;i<104;i++)
+    {
+        if(i>=44&&i<=53)
+        {
+            pokes[i]->setEnabled(true);
+            pokes[i]->open=1;
+        }
+        else
+        {
+            pokes[i]->setEnabled(false);
+            pokes[i]->open=0;
+        }
+        pokes[i]->solved=0;
+        pokes[i]->ontable=0;
+        pokes[i]->father=NULL;
+        pokes[i]->child=NULL;
+    }
 }//回到主菜单
 void poke::clickpoke()
 {
